@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowIndividualUserToListVirtualMFADevices",
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListVirtualMFADevices"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowIndividualUserToCreateThierMFA",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateVirtualMFADevice"
+      ],
+      "Resource": [
+        "arn:aws:iam::${account_id}:mfa/$${aws:username}"
+      ]
+    },
+    {
+      "Sid": "AllowIndividualUserToManageThierMFA",
+      "Effect": "Allow",
+      "Action": [
+        "iam:EnableMFADevice",
+        "iam:ResyncMFADevice"
+      ],
+      "Resource": [
+        "arn:aws:iam::${account_id}:user/nubis/admin/$${aws:username}"
+      ]
+    },
+    {
+      "Sid": "AllowIndividualUserToAssumeRole",
+      "Effect": "Allow",
+      "Action": [
+        "sts:AssumeRole"
+      ],
+      "Resource": [
+        "arn:aws:iam::${account_id}:role/nubis/admin/$${aws:username}",
+	    "arn:aws:iam::${account_id}:role/nubis/readonly"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:MultiFactorAuthPresent": "true"
+        }
+      }
+    }
+  ]
+}
