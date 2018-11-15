@@ -1,5 +1,5 @@
 variable "admin_users" {
-  type = list
+  type = "list"
 }
 
 variable "guest_user" {

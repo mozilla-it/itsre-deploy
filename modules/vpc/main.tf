@@ -1,3 +1,8 @@
+provider "aws" {
+  version = "~> 1"
+  region  = "${var.region}"
+}
+
 resource "aws_vpc" "default" {
   lifecycle {
     create_before_destroy = true
@@ -25,7 +30,7 @@ data "aws_availability_zone" "az" {
 
 resource "aws_subnet" "public" {
   count                   = "${length(var.availability_zones)}"
-  vpc_id                  = "${var.vpc_id}"
+  vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "${cidrsubnet(var.vpc_cidr, var.newbits, var.az_number[data.aws_availability_zone.az.*.name_suffix[count.index]] + var.public_netnum_offset)}"
   availability_zone       = "${var.availability_zones[count.index]}"
   map_public_ip_on_launch = true
@@ -33,14 +38,14 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_route_table" "public" {
-  vpc_id = "${var.vpc_id}"
-  tags   = "${merge(map("Name", "${var.name}-${var.env}-rt-public"), var.tags)}"
+  vpc_id = "${aws_vpc.default.id}"
+  tags   = "${merge(map("Name", "${var.name}-${var.environment}-rt-public"), var.tags)}"
 }
 
 resource "aws_route" "internet_route" {
   route_table_id         = "${aws_route_table.public.id}"
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${var.internet_gateway_id}"
+  gateway_id             = "${aws_internet_gateway.default.id}"
 
   lifecycle {
     create_before_destroy = true
@@ -76,7 +81,7 @@ resource "aws_nat_gateway" "nat_gw" {
 
 resource "aws_subnet" "private" {
   count                   = "${length(var.availability_zones)}"
-  vpc_id                  = "${var.vpc_id}"
+  vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "${cidrsubnet(var.vpc_cidr, var.newbits, var.az_number[data.aws_availability_zone.az.*.name_suffix[count.index]] + var.private_netnum_offset)}"
   availability_zone       = "${var.availability_zones[count.index]}"
   map_public_ip_on_launch = false
@@ -86,7 +91,7 @@ resource "aws_subnet" "private" {
 
 resource "aws_route_table" "private" {
   count  = "${length(var.availability_zones)}"
-  vpc_id = "${var.vpc_id}"
+  vpc_id = "${aws_vpc.default.id}"
   tags   = "${merge(map("Name", "${var.name}-${var.environment}-rt-private-${data.aws_availability_zone.az.*.name_suffix[count.index]}"), var.tags)}"
 }
 
@@ -118,7 +123,7 @@ resource "aws_route_table_association" "private" {
 resource "aws_security_group" "default" {
   name        = "internal"
   description = "Default security group that allows inbound and outbound traffic from all instances in the VPC"
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = "${aws_vpc.default.id}"
   tags        = "${merge(map("Name", "${var.name}-${var.environment}-sg-default"), var.tags)}"
 }
 
@@ -151,7 +156,7 @@ resource "aws_security_group_rule" "internal_egress" {
 resource "aws_security_group" "nat" {
   name        = "nat"
   description = "security group that allows all inbound and outbound traffic. should only be applied to instances in a private subnet"
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = "${aws_vpc.default.id}"
   tags        = "${merge(map("Name", "${var.name}-${var.environment}-sg-nat"), var.tags)}"
   depends_on  = ["aws_nat_gateway.nat_gw"]
 }

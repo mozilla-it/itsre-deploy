@@ -1,5 +1,3 @@
-
-
 resource "aws_iam_user" "admin_users" {
   count = "${length(var.admin_users)}"
   name  = "${element(var.admin_users, count.index)}"
@@ -25,12 +23,12 @@ resource "aws_iam_policy" "mfa" {
 }
 
 resource "aws_iam_group" "mfa-users" {
-	name	= "mfa-users"
+  name = "mfa-users"
 }
 
 resource "aws_iam_policy_attachment" "mfa" {
-	groups			= [ "${aws_iam_group.mfa-users.name}" ]
-	policy_arn  = "${aws_iam_policy.mfa.arn}"
+  groups     = ["${aws_iam_group.mfa-users.name}"]
+  policy_arn = "${aws_iam_policy.mfa.arn}"
 }
 
 resource "aws_iam_role" "admin" {
