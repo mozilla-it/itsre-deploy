@@ -77,6 +77,8 @@ resource "aws_nat_gateway" "nat_gw" {
     create_before_destroy = true
     ignore_changes        = ["subnet_id"]
   }
+
+  tags = "${merge(map("Name", "${var.name}-${var.environment}-nat-${data.aws_availability_zone.az.*.name_suffix[count.index]}"), var.tags)}"
 }
 
 resource "aws_subnet" "private" {
