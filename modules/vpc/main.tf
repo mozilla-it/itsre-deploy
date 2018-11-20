@@ -4,6 +4,8 @@ provider "aws" {
 }
 
 resource "aws_vpc" "default" {
+  count = "${var.enabled}"
+
   lifecycle {
     create_before_destroy = true
   }
@@ -15,6 +17,8 @@ resource "aws_vpc" "default" {
 }
 
 resource "aws_internet_gateway" "default" {
+  count = "${var.enabled}"
+
   lifecycle {
     create_before_destroy = true
   }
@@ -29,7 +33,7 @@ data "aws_availability_zone" "az" {
 }
 
 resource "aws_subnet" "public" {
-  count                   = "${length(var.availability_zones)}"
+  count                   = "${var.enabled * length(var.availability_zones)}"
   vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "${cidrsubnet(var.vpc_cidr, var.newbits, var.az_number[data.aws_availability_zone.az.*.name_suffix[count.index]] + var.public_netnum_offset)}"
   availability_zone       = "${var.availability_zones[count.index]}"
@@ -38,11 +42,13 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_route_table" "public" {
+  count  = "${var.enabled}"
   vpc_id = "${aws_vpc.default.id}"
   tags   = "${merge(map("Name", "${var.name}-${var.environment}-rt-public"), var.tags)}"
 }
 
 resource "aws_route" "internet_route" {
+  count                  = "${var.enabled}"
   route_table_id         = "${aws_route_table.public.id}"
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = "${aws_internet_gateway.default.id}"
@@ -53,7 +59,7 @@ resource "aws_route" "internet_route" {
 }
 
 resource "aws_route_table_association" "public" {
-  count          = "${length(var.availability_zones)}"
+  count          = "${var.enabled * length(var.availability_zones)}"
   subnet_id      = "${aws_subnet.public.*.id[count.index]}"
   route_table_id = "${aws_route_table.public.id}"
 
@@ -64,12 +70,12 @@ resource "aws_route_table_association" "public" {
 }
 
 resource "aws_eip" "nat_eip" {
-  count = "${length(var.availability_zones)}"
+  count = "${var.enabled * length(var.availability_zones)}"
   vpc   = true
 }
 
 resource "aws_nat_gateway" "nat_gw" {
-  count         = "${length(var.availability_zones)}"
+  count         = "${var.enabled * length(var.availability_zones)}"
   allocation_id = "${aws_eip.nat_eip.*.id[count.index]}"
   subnet_id     = "${aws_subnet.public.*.id[count.index]}"
 
@@ -82,7 +88,7 @@ resource "aws_nat_gateway" "nat_gw" {
 }
 
 resource "aws_subnet" "private" {
-  count                   = "${length(var.availability_zones)}"
+  count                   = "${var.enabled * length(var.availability_zones)}"
   vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "${cidrsubnet(var.vpc_cidr, var.newbits, var.az_number[data.aws_availability_zone.az.*.name_suffix[count.index]] + var.private_netnum_offset)}"
   availability_zone       = "${var.availability_zones[count.index]}"
@@ -92,13 +98,13 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_route_table" "private" {
-  count  = "${length(var.availability_zones)}"
+  count  = "${var.enabled * length(var.availability_zones)}"
   vpc_id = "${aws_vpc.default.id}"
   tags   = "${merge(map("Name", "${var.name}-${var.environment}-rt-private-${data.aws_availability_zone.az.*.name_suffix[count.index]}"), var.tags)}"
 }
 
 resource "aws_route" "nat_route" {
-  count                  = "${length(var.availability_zones)}"
+  count                  = "${var.enabled * length(var.availability_zones)}"
   route_table_id         = "${aws_route_table.private.*.id[count.index]}"
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = "${aws_nat_gateway.nat_gw.*.id[count.index]}"
@@ -112,7 +118,7 @@ resource "aws_route" "nat_route" {
 }
 
 resource "aws_route_table_association" "private" {
-  count          = "${length(var.availability_zones)}"
+  count          = "${var.enabled * length(var.availability_zones)}"
   subnet_id      = "${aws_subnet.private.*.id[count.index]}"
   route_table_id = "${aws_route_table.private.*.id[count.index]}"
 
