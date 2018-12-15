@@ -1,7 +1,3 @@
-variable "admin_users" {
+variable "users" {
   type = "list"
-}
-
-variable "guest_user" {
-  default = "guest"
 }
