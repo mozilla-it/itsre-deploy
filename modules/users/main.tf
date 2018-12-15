@@ -35,17 +35,17 @@ resource "aws_iam_role" "admin" {
   name  = "${element(var.users, count.index)}"
 
   assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal" : { "AWS" : "${element(aws_iam_user.users.*.arn, count.index)}" },
-      "Effect": "Allow",
-      "Sid": "${element(var.users, count.index)}"
-    }
-  ]
-}
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": "sts:AssumeRole",
+        "Principal" : { "AWS" : "${element(aws_iam_user.users.*.arn, count.index)}" },
+        "Effect": "Allow",
+        "Sid": "${element(var.users, count.index)}"
+      }
+    ]
+  }
 EOF
 }
 
