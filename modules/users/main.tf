@@ -32,7 +32,7 @@ resource "aws_iam_group_policy_attachment" "mfa" {
 resource "aws_iam_role" "admin" {
   count = "${length(var.users)}"
   path  = "/itcloud/AdminRole/"
-  name  = "${element(var.users), count.index)}"
+  name  = "${element(var.users, count.index)}"
 
   assume_role_policy = <<EOF
 {
