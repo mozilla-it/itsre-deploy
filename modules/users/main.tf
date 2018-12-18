@@ -11,7 +11,13 @@ data "template_file" "mfa" {
 resource "aws_iam_user" "users" {
   count = "${length(var.users)}"
   name  = "${element(var.users, count.index)}"
-  path  = "/itcloud/users/"
+  path  = "/${var.iam_path_prefix}/users/"
+
+  tags = {
+    Name      = "${element(var.users, count.index)}"
+    Terraform = "true"
+    Service   = "IAM"
+  }
 }
 
 resource "aws_iam_policy" "mfa" {
@@ -25,45 +31,65 @@ resource "aws_iam_group" "mfa-users" {
 }
 
 resource "aws_iam_group_policy_attachment" "mfa" {
-  groups     = ["${aws_iam_group.mfa-users.name}"]
+  group      = "${aws_iam_group.mfa-users.name}"
   policy_arn = "${aws_iam_policy.mfa.arn}"
 }
 
-resource "aws_iam_role" "admin" {
-  count = "${length(var.users)}"
-  path  = "/itcloud/AdminRole/"
-  name  = "${element(var.users, count.index)}"
+resource "aws_iam_group_membership" "users" {
+  name = "group-membership"
 
-  assume_role_policy = <<EOF
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Action": "sts:AssumeRole",
-        "Principal" : { "AWS" : "${element(aws_iam_user.users.*.arn, count.index)}" },
-        "Effect": "Allow",
-        "Sid": "${element(var.users, count.index)}"
-      }
-    ]
+  users = [
+    "${aws_iam_user.users.*.name}",
+  ]
+
+  group = "${aws_iam_group.mfa-users.name}"
+}
+
+data "aws_iam_policy_document" "role_assumption" {
+  count = "${length(var.users)}"
+
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["${element(aws_iam_user.users.*.arn, count.index)}"]
+    }
   }
-EOF
+}
+
+resource "aws_iam_role" "admin" {
+  path               = "/${var.iam_path_prefix}/AdminRole/"
+  name               = "AdminRole"
+  assume_role_policy = "${data.aws_iam_policy_document.role_assumption.json}"
+
+  tags = {
+    Name      = "AdminRole"
+    Terraform = "true"
+    Purpose   = "IAM Role user"
+    Service   = "IAM"
+  }
 }
 
 resource "aws_iam_role" "readonly" {
-  path = "/itcloud/readonly/"
-  name = "readonly"
+  path               = "/${var.iam_path_prefix}/ReadOnly/"
+  name               = "ReadOnlyRole"
+  assume_role_policy = "${data.aws_iam_policy_document.role_assumption.json}"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal" : { "AWS" : [ ${formatlist("\"%s\"", aws_iam_user.users.*.arn)} ]},
-      "Effect": "Allow",
-      "Sid": "readonly"
-    }
-  ]
+  tags = {
+    Name      = "ReadOnlyRole"
+    Terraform = "true"
+    Purpose   = "IAM Readonly role"
+    Service   = "IAM"
+  }
 }
-EOF
+
+resource "aws_iam_role_policy_attachment" "admin" {
+  role       = "${aws_iam_role.admin.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "readonly" {
+  role       = "${aws_iam_role.readonly.name}"
+  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
