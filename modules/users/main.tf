@@ -1,10 +1,15 @@
 data "aws_caller_identity" "current" {}
 
+# NOTE: When you switch the paths around the template needs its path
+# replaced as well, need to fix this to better detect that
 data "template_file" "mfa" {
   template = "${file("${path.module}/mfa-policy.json.tmpl")}"
 
   vars {
-    account_id = "${data.aws_caller_identity.current.account_id}"
+    path_prefix       = "${var.iam_path_prefix}"
+    account_id        = "${data.aws_caller_identity.current.account_id}"
+    admin_role_arn    = "${aws_iam_role.admin.arn}"
+    readonly_role_arn = "${aws_iam_role.readonly.arn}"
   }
 }
 
@@ -18,6 +23,11 @@ resource "aws_iam_user" "users" {
     Terraform = "true"
     Service   = "IAM"
   }
+}
+
+resource "aws_iam_access_key" "users" {
+  count = "${length(var.users)}"
+  user  = "${element(var.users, count.index)}"
 }
 
 resource "aws_iam_policy" "mfa" {
@@ -59,8 +69,9 @@ data "aws_iam_policy_document" "role_assumption" {
 }
 
 resource "aws_iam_role" "admin" {
-  path               = "/${var.iam_path_prefix}/AdminRole/"
+  path               = "/${var.iam_path_prefix}/"
   name               = "AdminRole"
+  description        = "Admin role managed by Terraform"
   assume_role_policy = "${data.aws_iam_policy_document.role_assumption.json}"
 
   tags = {
@@ -72,8 +83,9 @@ resource "aws_iam_role" "admin" {
 }
 
 resource "aws_iam_role" "readonly" {
-  path               = "/${var.iam_path_prefix}/ReadOnly/"
+  path               = "/${var.iam_path_prefix}/"
   name               = "ReadOnlyRole"
+  description        = "ReadOnly role managed by Terraform"
   assume_role_policy = "${data.aws_iam_policy_document.role_assumption.json}"
 
   tags = {

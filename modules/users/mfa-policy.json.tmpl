@@ -27,7 +27,7 @@
         "iam:ResyncMFADevice"
       ],
       "Resource": [
-        "arn:aws:iam::${account_id}:user/nubis/admin/$${aws:username}"
+        "arn:aws:iam::${account_id}:user/${path_prefix}/users/$${aws:username}"
       ]
     },
     {
@@ -37,8 +37,8 @@
         "sts:AssumeRole"
       ],
       "Resource": [
-        "arn:aws:iam::${account_id}:role/nubis/admin/$${aws:username}",
-	    "arn:aws:iam::${account_id}:role/nubis/readonly"
+        "${admin_role_arn}",
+        "${readonly_role_arn}"
       ],
       "Condition": {
         "Bool": {
