@@ -1,5 +1,5 @@
 resource "null_resource" "subnets" {
-  count = "${length(var.azs)}"
+  count = "${var.enabled * length(var.azs)}"
 
   triggers = {
     public_subnets  = "${cidrsubnet(var.vpc_cidr, var.newbits, (count.index % length(var.azs)))}"
