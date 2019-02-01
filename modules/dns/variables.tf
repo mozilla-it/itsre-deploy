@@ -1,3 +1,5 @@
+variable "enabled" {}
+
 variable "account_name" {}
 
 variable "domain" {
