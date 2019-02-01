@@ -16,8 +16,8 @@ variable "vpc_cidr" {
   default = "10.0.0.0/16"
 }
 
-variable "availability_zones" {
-  type = "list"
+variable "az_placement" {
+  description = "How many AZs do you want to place subnets in"
 }
 
 variable "enable_nat_gateway" {
@@ -39,4 +39,12 @@ variable "tags" {
 
 variable "newbits" {
   default = "4"
+}
+
+variable "enable_s3_endpoint" {
+  default = true
+}
+
+variable "enable_dynamodb_endpoint" {
+  default = true
 }
