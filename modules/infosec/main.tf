@@ -22,7 +22,9 @@ resource "aws_cloudformation_stack" "opsec" {
     "CAPABILITY_IAM",
   ]
 
-  template_body = "${file("${path.module}/audit.json")}"
+  template_body = "${file("${path.module}/audit.yaml")}"
 
-  parameters = {}
+  parameters = {
+    EmailAddress = "${var.notify_address}"
+  }
 }

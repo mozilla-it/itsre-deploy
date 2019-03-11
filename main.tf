@@ -15,6 +15,9 @@ module "users" {
 module "infosec" {
   source  = "./modules/infosec"
   enabled = "${lookup(var.features, "infosec")}"
+
+  cloudtrail_bucket    = "${lookup(var.infosec, "bucket")}"
+  cloudtrail_sns_topic = "${lookup(var.infosec, "sns_topic")}"
 }
 
 module "dns" {
