@@ -107,14 +107,14 @@ data aws_iam_policy_document "sts" {
 resource "aws_iam_role" "admin" {
   count              = "${local.create_users}"
   path               = "/${var.iam_path_prefix}/"
-  name               = "AdminRole"
+  name               = "itsre-admin"
   description        = "Admin role managed by Terraform"
   assume_role_policy = "${element(data.aws_iam_policy_document.sts.*.json, count.index)}"
 
   tags = {
-    Name      = "AdminRole"
+    Name      = "itsre-admin"
     Terraform = "true"
-    Purpose   = "IAM Role user"
+    Purpose   = "IAM Admin role"
     Service   = "IAM"
   }
 }
@@ -122,12 +122,12 @@ resource "aws_iam_role" "admin" {
 resource "aws_iam_role" "readonly" {
   count              = "${local.create_users}"
   path               = "/${var.iam_path_prefix}/"
-  name               = "ReadOnlyRole"
+  name               = "itsre-readonly"
   description        = "ReadOnly role managed by Terraform"
   assume_role_policy = "${element(data.aws_iam_policy_document.sts.*.json, count.index)}"
 
   tags = {
-    Name      = "ReadOnlyRole"
+    Name      = "itsre-readonly"
     Terraform = "true"
     Purpose   = "IAM Readonly role"
     Service   = "IAM"
