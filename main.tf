@@ -8,8 +8,10 @@ locals {
 }
 
 module "users" {
-  source = "./modules/users"
-  users  = "${var.users}"
+  source                = "./modules/users"
+  create_users          = "${lookup(var.features, "users")}"
+  users                 = "${var.users}"
+  delegated_account_ids = "${var.delegated_account_ids}"
 }
 
 module "infosec" {
