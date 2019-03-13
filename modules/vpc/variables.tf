@@ -3,7 +3,7 @@ variable "region" {
 }
 
 variable "module_version" {
-  default = "1.46.0"
+  default = "1.59.0"
 }
 
 variable "enable_vpc" {
@@ -13,11 +13,12 @@ variable "enable_vpc" {
 variable "name" {}
 
 variable "vpc_cidr" {
-  default = "10.0.0.0/16"
+  default = "172.16.0.0/16"
 }
 
 variable "az_placement" {
   description = "How many AZs do you want to place subnets in"
+  default     = "3"
 }
 
 variable "enable_nat_gateway" {

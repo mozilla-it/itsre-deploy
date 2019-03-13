@@ -6,7 +6,7 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 
 locals {
-  az_placement = "${slice(data.aws_availability_zones.available.names, 0, az_placement)}"
+  az_placement = "${slice(data.aws_availability_zones.available.names, 0, var.az_placement)}"
 }
 
 # NOTE: modules don't accept count.index so i have no choice but to do this
@@ -20,7 +20,7 @@ module "subnets" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "1.59.0"
+  version = "${var.module_version}"
 
   create_vpc             = "${var.enable_vpc}"
   name                   = "${var.name}"
