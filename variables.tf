@@ -8,12 +8,19 @@ variable "account_name" {}
 
 variable "users" {
   type    = "list"
-  default = ["pchiasson", "elim", "eziegenhorn", "kferrando", "sidler", "adelbarrio"]
+  default = ["pchiasson", "elim", "eziegenhorn", "kferrando", "sidler", "adelbarrio", "afrank"]
+}
+
+variable "delegated_account_ids" {
+  type    = "list"
+  default = ["921547910285", "177680776199"]
 }
 
 variable "features" {
   default = {
+    users   = false
     vpc     = false
+    dns     = true
     infosec = true
   }
 }
