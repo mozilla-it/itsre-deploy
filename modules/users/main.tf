@@ -107,12 +107,12 @@ data aws_iam_policy_document "sts" {
 resource "aws_iam_role" "admin" {
   count              = "${local.create_users}"
   path               = "/${var.iam_path_prefix}/"
-  name               = "itsre-admin"
+  name               = "AdminRole"
   description        = "Admin role managed by Terraform"
   assume_role_policy = "${element(data.aws_iam_policy_document.sts.*.json, count.index)}"
 
   tags = {
-    Name      = "itsre-admin"
+    Name      = "AdminRole"
     Terraform = "true"
     Purpose   = "IAM Admin role"
     Service   = "IAM"
@@ -122,12 +122,12 @@ resource "aws_iam_role" "admin" {
 resource "aws_iam_role" "readonly" {
   count              = "${local.create_users}"
   path               = "/${var.iam_path_prefix}/"
-  name               = "itsre-readonly"
+  name               = "ReadOnlyRole"
   description        = "ReadOnly role managed by Terraform"
   assume_role_policy = "${element(data.aws_iam_policy_document.sts.*.json, count.index)}"
 
   tags = {
-    Name      = "itsre-readonly"
+    Name      = "ReadOnlyRole"
     Terraform = "true"
     Purpose   = "IAM Readonly role"
     Service   = "IAM"
@@ -154,6 +154,8 @@ data template_file "init" {
     username              = "${element(aws_iam_access_key.users.*.user, count.index)}"
     aws_access_key_id     = "${element(aws_iam_access_key.users.*.id, count.index)}"
     aws_secret_access_key = "${element(aws_iam_access_key.users.*.secret, count.index)}"
+    admin_role            = "${element(aws_iam_role.admin.*.arn, count.index)}"
+    readonly_role         = "${element(aws_iam_role.readonly.*.arn, count.index)}"
   }
 }
 

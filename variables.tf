@@ -6,13 +6,9 @@ variable "account_name" {}
 
 #variable "environment" {}
 
-variable "users" {
+variable "admin_users" {
   type    = "list"
   default = ["pchiasson", "elim", "eziegenhorn", "kferrando", "sidler", "adelbarrio", "afrank"]
-}
-
-variable "write_access_files" {
-  default = true
 }
 
 variable "delegated_account_ids" {
@@ -26,6 +22,13 @@ variable "features" {
     vpc     = false
     dns     = true
     infosec = true
+  }
+}
+
+variable "users" {
+  default = {
+    create_access_keys = true
+    write_access_files = true
   }
 }
 

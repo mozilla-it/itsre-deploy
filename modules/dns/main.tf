@@ -18,15 +18,3 @@ resource "aws_route53_zone" "main" {
   delegation_set_id = "${element(aws_route53_delegation_set.default.*.id, count.index)}"
   tags              = "${merge(map("Name", "${var.account_name}-zone", "Region", "core"), var.tags)}"
 }
-
-resource "aws_route53_record" "main-ns" {
-  count   = "${var.enabled}"
-  zone_id = "${aws_route53_zone.main.zone_id}"
-  name    = "${local.zone_name}"
-  type    = "NS"
-  ttl     = "${var.zone_ttl}"
-
-  records = [
-    "${aws_route53_zone.main.name_servers}",
-  ]
-}
