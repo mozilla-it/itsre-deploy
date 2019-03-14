@@ -3,5 +3,11 @@ output "hosted_zone_id" {
 }
 
 output "master_zone_nameservers" {
-  value = "${join(",", aws_route53_zone.main.*.name_servers)}"
+  value = "${flatten(aws_route53_zone.main.*.name_servers)}"
+}
+
+# Should only ever have 1 master zone so we assume
+# and take the first element
+output "master_zone_name" {
+  value = "${aws_route53_zone.main.0.name}"
 }

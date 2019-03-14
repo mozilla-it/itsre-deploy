@@ -7,11 +7,14 @@ locals {
   vpc_tags = "${merge(map("Region", "${var.region}", "Environment", "core"), var.default_tags)}"
 }
 
+data "aws_caller_identity" "current" {}
+
 module "users" {
   source                = "./modules/users"
   create_users          = "${lookup(var.features, "users")}"
-  write_access_files    = "${var.write_access_files}"
-  users                 = "${var.users}"
+  create_access_keys    = "${lookup(var.users, "create_access_keys")}"
+  write_access_files    = "${lookup(var.users, "write_access_files")}"
+  users                 = "${var.admin_users}"
   delegated_account_ids = "${var.delegated_account_ids}"
 }
 
