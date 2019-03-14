@@ -20,7 +20,7 @@ module "subnets" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "${var.module_version}"
+  version = "1.59.0"
 
   create_vpc             = "${var.enable_vpc}"
   name                   = "${var.name}"

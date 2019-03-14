@@ -11,6 +11,10 @@ variable "users" {
   default = ["pchiasson", "elim", "eziegenhorn", "kferrando", "sidler", "adelbarrio", "afrank"]
 }
 
+variable "write_access_files" {
+  default = true
+}
+
 variable "delegated_account_ids" {
   type    = "list"
   default = ["921547910285", "177680776199"]
@@ -27,11 +31,12 @@ variable "features" {
 
 variable "vpc" {
   default = {
-    name                      = "main-vpc"
-    vpc_cidr                  = "172.16.0.0/16"
-    az_placement              = "3"
-    enable_nat_gateway        = true
-    enable_single_nat_gateway = true
+    name                        = "main-vpc"
+    vpc_cidr                    = "172.16.0.0/16"
+    az_placement                = "3"
+    enable_nat_gateway          = true
+    enable_single_nat_gateway   = true
+    enable_multiple_nat_gateway = false
   }
 }
 
