@@ -10,6 +10,7 @@ locals {
 module "users" {
   source                = "./modules/users"
   create_users          = "${lookup(var.features, "users")}"
+  write_access_files    = "${var.write_access_files}"
   users                 = "${var.users}"
   delegated_account_ids = "${var.delegated_account_ids}"
 }

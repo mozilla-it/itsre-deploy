@@ -2,10 +2,6 @@ variable "region" {
   default = "us-west-2"
 }
 
-variable "module_version" {
-  default = "1.59.0"
-}
-
 variable "enable_vpc" {
   default = true
 }

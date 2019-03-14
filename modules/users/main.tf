@@ -26,8 +26,8 @@ data "aws_iam_policy_document" "group-sts" {
     actions = ["sts:AssumeRole"]
 
     resources = [
-      "${aws_iam_role.admin.arn}",
-      "${aws_iam_role.readonly.arn}",
+      "${aws_iam_role.admin.*.arn}",
+      "${aws_iam_role.readonly.*.arn}",
       "${local.delegated_admin_arn}",
       "${local.delegated_readonly_arn}",
       "${local.delegated_poweruser_arn}",
