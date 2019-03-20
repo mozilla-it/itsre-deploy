@@ -4,8 +4,6 @@ variable "region" {
 
 variable "account_name" {}
 
-#variable "environment" {}
-
 variable "admin_users" {
   type    = "list"
   default = ["pchiasson", "elim", "eziegenhorn", "kferrando", "sidler", "adelbarrio", "afrank"]
@@ -40,6 +38,13 @@ variable "vpc" {
     enable_nat_gateway          = true
     enable_single_nat_gateway   = true
     enable_multiple_nat_gateway = false
+  }
+}
+
+variable "cloudhealth" {
+  default = {
+    role_name   = "cloud_health_role"
+    external_id = ""
   }
 }
 

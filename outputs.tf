@@ -17,3 +17,11 @@ output "nameservers" {
 output "vpc_id" {
   value = "${module.vpc.vpc_id}"
 }
+
+output "cloudhealth_role_arn" {
+  value = "${module.cloudhealth.cloudhealth_assume_role_arn}"
+}
+
+output "cloudhealth_external_id" {
+  value = "${module.cloudhealth.cloudhealth_assume_role_external_id}"
+}
