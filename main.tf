@@ -30,7 +30,7 @@ module "cloudhealth" {
   source = "./modules/cloudhealth"
 
   cloudhealth_role_name   = "${lookup(var.cloudhealth, "role_name")}"
-  cloudhealth_external_id = "${looup(var.cloudhealth, "external_id")}"
+  cloudhealth_external_id = "${lookup(var.cloudhealth, "external_id")}"
 }
 
 module "dns" {
