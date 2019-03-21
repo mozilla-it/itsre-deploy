@@ -44,7 +44,7 @@ variable "vpc" {
 variable "cloudhealth" {
   default = {
     role_name   = "cloud_health_role"
-    external_id = ""
+    external_id = "62f85b3d4efcbeb2b360ae857fec1e"
   }
 }
 
