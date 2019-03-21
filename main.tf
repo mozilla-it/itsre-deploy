@@ -26,6 +26,13 @@ module "infosec" {
   cloudtrail_sns_topic = "${lookup(var.infosec, "sns_topic")}"
 }
 
+module "cloudhealth" {
+  source = "./modules/cloudhealth"
+
+  cloudhealth_role_name   = "${lookup(var.cloudhealth, "role_name")}"
+  cloudhealth_external_id = "${lookup(var.cloudhealth, "external_id")}"
+}
+
 module "dns" {
   source       = "./modules/dns"
   enabled      = "${lookup(var.features, "dns")}"
