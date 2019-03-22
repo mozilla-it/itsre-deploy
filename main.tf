@@ -9,6 +9,11 @@ locals {
 
 data "aws_caller_identity" "current" {}
 
+module "account" {
+  source       = "./modules/account"
+  account_name = "${var.account_name}"
+}
+
 module "users" {
   source                = "./modules/users"
   create_users          = "${lookup(var.features, "users")}"
