@@ -8,6 +8,11 @@ variable "create_access_keys" {
   default     = true
 }
 
+variable "create_delegated_permissions" {
+  description = "Toggle to create sts:AssumeRole for delegated accounts"
+  default     = false
+}
+
 variable "write_access_files" {
   description = "Write out access files"
   default     = true

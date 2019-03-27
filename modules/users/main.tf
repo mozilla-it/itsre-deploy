@@ -1,12 +1,13 @@
 data "aws_caller_identity" "current" {}
 
 locals {
-  create_users            = "${var.create_users ? 1 : 0}"
-  create_access_keys      = "${var.create_access_keys ? 1 : 0}"
-  write_access_files      = "${var.write_access_files ? 1 : 0}"
-  delegated_admin_arn     = "${formatlist("arn:aws:iam::%s:role/itsre-admin", var.delegated_account_ids)}"
-  delegated_readonly_arn  = "${formatlist("arn:aws:iam::%s:role/itsre-readonly", var.delegated_account_ids)}"
-  delegated_poweruser_arn = "${formatlist("arn:aws:iam::%s:role/itsre-poweruser", var.delegated_account_ids)}"
+  create_users                 = "${var.create_users ? 1 : 0}"
+  create_access_keys           = "${var.create_access_keys ? 1 : 0}"
+  create_delegated_permissions = "${var.create_delegated_permissions ? 1 : 0}"
+  write_access_files           = "${var.write_access_files ? 1 : 0}"
+  delegated_admin_arn          = "${formatlist("arn:aws:iam::%s:role/itsre-admin", var.delegated_account_ids)}"
+  delegated_readonly_arn       = "${formatlist("arn:aws:iam::%s:role/itsre-readonly", var.delegated_account_ids)}"
+  delegated_poweruser_arn      = "${formatlist("arn:aws:iam::%s:role/itsre-poweruser", var.delegated_account_ids)}"
 }
 
 # NOTE: When you switch the paths around the template needs its path
@@ -15,19 +16,21 @@ data "template_file" "mfa" {
   template = "${file("${path.module}/templates/mfa-policy.json.tmpl")}"
 
   vars {
-    path_prefix = "${var.iam_path_prefix}"
-    account_id  = "${data.aws_caller_identity.current.account_id}"
+    admin_arn    = "${join(",", formatlist("\"%s\"", aws_iam_role.admin.*.arn))}"
+    readonly_arn = "${join(",", formatlist("\"%s\"", aws_iam_role.readonly.*.arn))}"
+    path_prefix  = "${var.iam_path_prefix}"
+    account_id   = "${data.aws_caller_identity.current.account_id}"
   }
 }
 
 data "aws_iam_policy_document" "group-sts" {
+  count = "${local.create_delegated_permissions}"
+
   statement {
     sid     = "AllowIndividualUserToAssumeRole"
     actions = ["sts:AssumeRole"]
 
     resources = [
-      "${aws_iam_role.admin.*.arn}",
-      "${aws_iam_role.readonly.*.arn}",
       "${local.delegated_admin_arn}",
       "${local.delegated_readonly_arn}",
       "${local.delegated_poweruser_arn}",
@@ -75,6 +78,7 @@ resource "aws_iam_group_policy_attachment" "mfa" {
 }
 
 resource "aws_iam_group_policy" "group-sts" {
+  count  = "${local.create_delegated_permissions}"
   name   = "sts-allow"
   group  = "${aws_iam_group.mfa-users.name}"
   policy = "${data.aws_iam_policy_document.group-sts.json}"

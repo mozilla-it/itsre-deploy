@@ -25,8 +25,9 @@ variable "features" {
 
 variable "users" {
   default = {
-    create_access_keys = true
-    write_access_files = true
+    create_access_keys           = true
+    write_access_files           = true
+    create_delegated_permissions = false
   }
 }
 
