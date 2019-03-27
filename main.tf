@@ -15,12 +15,13 @@ module "account" {
 }
 
 module "users" {
-  source                = "./modules/users"
-  create_users          = "${lookup(var.features, "users")}"
-  create_access_keys    = "${lookup(var.users, "create_access_keys")}"
-  write_access_files    = "${lookup(var.users, "write_access_files")}"
-  users                 = "${var.admin_users}"
-  delegated_account_ids = "${var.delegated_account_ids}"
+  source                       = "./modules/users"
+  create_users                 = "${lookup(var.features, "users")}"
+  create_access_keys           = "${lookup(var.users, "create_access_keys")}"
+  create_delegated_permissions = "${lookup(var.users, "create_delegated_permissions")}"
+  write_access_files           = "${lookup(var.users, "write_access_files")}"
+  users                        = "${var.admin_users}"
+  delegated_account_ids        = "${var.delegated_account_ids}"
 }
 
 module "infosec" {

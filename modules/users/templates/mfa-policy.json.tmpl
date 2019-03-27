@@ -29,6 +29,20 @@
       "Resource": [
         "arn:aws:iam::${account_id}:user/${path_prefix}/users/$${aws:username}"
       ]
+    },
+    {
+        "Sid": "AllowUserToAssumeRole",
+        "Effect": "Allow",
+        "Action": "sts:AssumeRole",
+        "Resource": [
+            ${admin_arn},
+            ${readonly_arn}
+        ],
+        "Condition": {
+            "Bool": {
+                "aws:MultiFactorAuthPresent": "true"
+            }
+        }
     }
   ]
 }
