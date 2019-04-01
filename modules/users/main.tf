@@ -155,6 +155,7 @@ data template_file "init" {
   template = "${file("${path.module}/templates/users.json")}"
 
   vars = {
+    account_id            = "${data.aws_caller_identity.current.account_id}"
     username              = "${element(aws_iam_access_key.users.*.user, count.index)}"
     aws_access_key_id     = "${element(aws_iam_access_key.users.*.id, count.index)}"
     aws_secret_access_key = "${element(aws_iam_access_key.users.*.secret, count.index)}"
