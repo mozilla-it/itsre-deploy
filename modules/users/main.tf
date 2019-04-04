@@ -62,23 +62,26 @@ resource "aws_iam_access_key" "users" {
 }
 
 resource "aws_iam_policy" "mfa" {
+  count       = "${local.create_users}"
   name        = "mfa"
   description = "Policy that enforces MFA access"
   policy      = "${data.template_file.mfa.rendered}"
 }
 
 resource "aws_iam_group" "mfa-users" {
-  name = "mfa-users"
-  path = "/${var.iam_path_prefix}/"
+  count = "${local.create_users}"
+  name  = "mfa-users"
+  path  = "/${var.iam_path_prefix}/"
 }
 
 resource "aws_iam_group_policy_attachment" "mfa" {
-  group      = "${aws_iam_group.mfa-users.name}"
-  policy_arn = "${aws_iam_policy.mfa.arn}"
+  count      = "${local.create_users}"
+  group      = "${element(aws_iam_group.mfa-users.*.name, count.index)}"
+  policy_arn = "${element(aws_iam_policy.mfa.*.arn, count.index)}"
 }
 
 resource "aws_iam_group_policy" "group-sts" {
-  count  = "${local.create_delegated_permissions}"
+  count  = "${local.create_users * local.create_delegated_permissions}"
   name   = "sts-allow"
   group  = "${aws_iam_group.mfa-users.name}"
   policy = "${data.aws_iam_policy_document.group-sts.json}"
