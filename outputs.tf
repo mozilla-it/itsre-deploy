@@ -14,6 +14,10 @@ output "nameservers" {
   value = "${module.dns.master_zone_nameservers}"
 }
 
+output "hosted_zone_id" {
+  value = "${module.dns.hosted_zone_id}"
+}
+
 output "vpc_id" {
   value = "${module.vpc.vpc_id}"
 }
