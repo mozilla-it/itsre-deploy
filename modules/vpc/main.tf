@@ -20,7 +20,7 @@ module "subnets" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "1.59.0"
+  version = "1.64.0"
 
   create_vpc             = "${var.enable_vpc}"
   name                   = "${var.name}"
@@ -42,5 +42,11 @@ module "vpc" {
 
   vpc_tags = {
     Name = "${var.name}-vpc"
+  }
+
+  # We have no idea if the vpc will host an eks
+  # cluster but we put this here anyway
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = "true"
   }
 }
