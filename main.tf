@@ -12,6 +12,7 @@ data "aws_caller_identity" "current" {}
 module "account" {
   source       = "./modules/account"
   account_name = "${var.account_name}"
+  enabled      = "${lookup(var.features, "account")}"
 }
 
 module "users" {
