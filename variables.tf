@@ -20,6 +20,7 @@ variable "features" {
     vpc     = false
     dns     = true
     infosec = true
+    account = true
   }
 }
 
