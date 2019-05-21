@@ -46,14 +46,16 @@ module "dns" {
 }
 
 module "vpc" {
-  source                 = "./modules/vpc"
-  region                 = "${var.region}"
-  enable_vpc             = "${lookup(var.features, "vpc")}"
-  name                   = "${lookup(var.vpc, "name")}"
-  vpc_cidr               = "${lookup(var.vpc, "vpc_cidr")}"
-  az_placement           = "${lookup(var.vpc, "az_placement")}"
-  enable_nat_gateway     = "${lookup(var.vpc, "enable_nat_gateway")}"
-  single_nat_gateway     = "${lookup(var.vpc, "enable_single_nat_gateway")}"
-  one_nat_gateway_per_az = "${lookup(var.vpc, "enable_multiple_nat_gateway")}"
-  tags                   = "${local.vpc_tags}"
+  source                   = "./modules/vpc"
+  region                   = "${var.region}"
+  enable_vpc               = "${lookup(var.features, "vpc")}"
+  name                     = "${lookup(var.vpc, "name")}"
+  vpc_cidr                 = "${lookup(var.vpc, "vpc_cidr")}"
+  az_placement             = "${lookup(var.vpc, "az_placement")}"
+  enable_nat_gateway       = "${lookup(var.vpc, "enable_nat_gateway")}"
+  single_nat_gateway       = "${lookup(var.vpc, "enable_single_nat_gateway")}"
+  one_nat_gateway_per_az   = "${lookup(var.vpc, "enable_multiple_nat_gateway")}"
+  enable_dynamodb_endpoint = "${lookup(var.vpc, "enable_dynamodb_endpoint")}"
+  enable_s3_endpoint       = "${lookup(var.vpc, "enable_s3_endpoint")}"
+  tags                     = "${local.vpc_tags}"
 }
