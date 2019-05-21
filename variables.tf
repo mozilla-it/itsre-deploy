@@ -39,6 +39,8 @@ variable "vpc" {
     enable_nat_gateway          = true
     enable_single_nat_gateway   = true
     enable_multiple_nat_gateway = false
+    enable_dynamodb_endpoint    = false
+    enable_s3_endpoint          = false
   }
 }
 
