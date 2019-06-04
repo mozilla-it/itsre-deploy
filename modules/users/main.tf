@@ -141,6 +141,21 @@ resource "aws_iam_role" "readonly" {
   }
 }
 
+resource "aws_iam_role" "poweruser" {
+  count              = "${local.create_users}"
+  path               = "/${var.iam_path_prefix}/"
+  name               = "PowerUserRole"
+  description        = "PowerUser role managed by Terraform"
+  assume_role_policy = "${element(data.aws_iam_policy_document.sts.*.json, count.index)}"
+
+  tags = {
+    Name      = "PowerUserRole"
+    Terraform = "true"
+    Purpose   = "IAM Powueruser role"
+    Service   = "IAM"
+  }
+}
+
 resource "aws_iam_role_policy_attachment" "admin" {
   count      = "${local.create_users}"
   role       = "${element(aws_iam_role.admin.*.name, count.index)}"
@@ -151,6 +166,12 @@ resource "aws_iam_role_policy_attachment" "readonly" {
   count      = "${local.create_users}"
   role       = "${aws_iam_role.readonly.name}"
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "poweruser" {
+  count      = "${local.create_users}"
+  role       = "${aws_iam_role.poweruser.name}"
+  policy_arn = "arn:aws:iam::aws:policy/PowerUserAccess"
 }
 
 data template_file "init" {
