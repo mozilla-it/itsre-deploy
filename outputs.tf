@@ -37,3 +37,7 @@ output "cloudhealth_role_arn" {
 output "cloudhealth_external_id" {
   value = "${module.cloudhealth.cloudhealth_assume_role_external_id}"
 }
+
+output "billing_policy_arn" {
+  value = "${module.policies.billing_readonly_policy_arn}"
+}

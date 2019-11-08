@@ -16,11 +16,12 @@ variable "delegated_account_ids" {
 
 variable "features" {
   default = {
-    users   = false
-    vpc     = false
-    dns     = true
-    infosec = true
-    account = true
+    users    = false
+    vpc      = false
+    dns      = true
+    infosec  = true
+    account  = true
+    policies = true
   }
 }
 
