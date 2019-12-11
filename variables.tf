@@ -67,3 +67,8 @@ variable "default_tags" {
     Terraform        = "true"
   }
 }
+
+variable "kubernetes_tags" {
+  default = {}
+  type    = "map"
+}

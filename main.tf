@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 locals {
-  vpc_tags = "${merge(map("Region", "${var.region}", "Environment", "core"), var.default_tags)}"
+  vpc_tags = "${merge(map("Region", "${var.region}", "Environment", "core"), var.default_tags, var.kubernetes_tags)}"
 }
 
 data "aws_caller_identity" "current" {}

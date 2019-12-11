@@ -32,13 +32,17 @@ module "vpc" {
   private_subnets        = "${module.subnets.private_subnets}"
   public_subnets         = "${module.subnets.public_subnets}"
 
+  # DNS
+  default_vpc_enable_dns_hostnames = "${var.vpc_enable_dns_hostnames}"
+  default_vpc_enable_dns_support   = "${var.vpc_enable_dns_support}"
+
   # VPC endpoint for S3
   enable_s3_endpoint = "${var.enable_s3_endpoint}"
 
   # VPC endpoint for DynamoDB
   enable_dynamodb_endpoint = "${var.enable_dynamodb_endpoint}"
 
-  tags = "${var.tags}"
+  tags = "${merge(var.tags, var.kubernetes_tags})}"
 
   vpc_tags = {
     Name = "${var.name}-vpc"

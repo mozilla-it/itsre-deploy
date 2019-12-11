@@ -29,7 +29,20 @@ variable "one_nat_gateway_per_az" {
   default = true
 }
 
+variable "vpc_enable_dns_hostnames" {
+  default = true
+}
+
+variable "vpc_enable_dns_support" {
+  default = true
+}
+
 variable "tags" {
+  default = {}
+  type    = "map"
+}
+
+variable "kubernetes_tags" {
   default = {}
   type    = "map"
 }
