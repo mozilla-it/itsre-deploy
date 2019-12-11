@@ -20,7 +20,7 @@ module "subnets" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "1.64.0"
+  version = "1.71.0"
 
   create_vpc             = "${var.enable_vpc}"
   name                   = "${var.name}"
@@ -33,8 +33,8 @@ module "vpc" {
   public_subnets         = "${module.subnets.public_subnets}"
 
   # DNS
-  default_vpc_enable_dns_hostnames = "${var.vpc_enable_dns_hostnames}"
-  default_vpc_enable_dns_support   = "${var.vpc_enable_dns_support}"
+  enable_dns_hostnames = "${var.vpc_enable_dns_hostnames}"
+  enable_dns_support   = "${var.vpc_enable_dns_support}"
 
   # VPC endpoint for S3
   enable_s3_endpoint = "${var.enable_s3_endpoint}"
@@ -42,7 +42,7 @@ module "vpc" {
   # VPC endpoint for DynamoDB
   enable_dynamodb_endpoint = "${var.enable_dynamodb_endpoint}"
 
-  tags = "${merge(var.tags, var.kubernetes_tags})}"
+  tags = "${merge(var.tags, var.kubernetes_tags)}"
 
   vpc_tags = {
     Name = "${var.name}-vpc"
