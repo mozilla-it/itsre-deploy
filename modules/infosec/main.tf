@@ -1,8 +1,3 @@
-provider "aws" {
-  version = "~> 1"
-  region  = "${var.region}"
-}
-
 resource "aws_cloudtrail" "opsec-cloudtrail" {
   count                         = "${var.enabled}"
   name                          = "opsec-cloudtrail"
