@@ -2,15 +2,16 @@ variable "region" {
   default = "us-west-2"
 }
 
-variable "account_name" {}
+variable "account_name" {
+}
 
 variable "admin_users" {
-  type    = "list"
-  default = ["pchiasson", "elim", "eziegenhorn", "kferrando", "sidler", "adelbarrio", "afrank"]
+  type    = list(string)
+  default = ["elim", "eziegenhorn", "kferrando", "sidler", "adelbarrio", "afrank"]
 }
 
 variable "delegated_account_ids" {
-  type    = "list"
+  type    = list(string)
   default = ["921547910285", "177680776199"]
 }
 
@@ -18,7 +19,7 @@ variable "features" {
   default = {
     users    = false
     vpc      = false
-    dns      = true
+    dns      = false
     infosec  = true
     account  = true
     policies = true
@@ -41,8 +42,8 @@ variable "vpc" {
     enable_nat_gateway          = true
     enable_single_nat_gateway   = true
     enable_multiple_nat_gateway = false
-    enable_dynamodb_endpoint    = false
-    enable_s3_endpoint          = false
+    enable_dynamodb_endpoint    = true
+    enable_s3_endpoint          = true
   }
 }
 
@@ -70,5 +71,6 @@ variable "default_tags" {
 
 variable "kubernetes_tags" {
   default = {}
-  type    = "map"
+  type    = map(string)
 }
+

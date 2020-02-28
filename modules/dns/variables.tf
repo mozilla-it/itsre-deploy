@@ -1,6 +1,9 @@
-variable "enabled" {}
+variable "enabled" {
+  default = false
+}
 
-variable "account_name" {}
+variable "account_name" {
+}
 
 variable "domain" {
   default = "mozit.cloud"
@@ -12,5 +15,6 @@ variable "zone_ttl" {
 
 variable "tags" {
   default = {}
-  type    = "map"
+  type    = map(string)
 }
+

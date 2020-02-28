@@ -1,6 +1,6 @@
 resource "aws_iam_account_alias" "alias" {
-  account_alias = "${var.account_name}"
-  count         = "${var.enabled}"
+  account_alias = var.account_name
+  count         = var.enabled ? 1 : 0
 }
 
 resource "aws_iam_account_password_policy" "strict" {
