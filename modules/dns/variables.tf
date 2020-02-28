@@ -1,5 +1,6 @@
 variable "enabled" {
   default = false
+  type    = bool
 }
 
 variable "account_name" {
