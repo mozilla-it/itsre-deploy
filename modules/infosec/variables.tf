@@ -1,5 +1,6 @@
 variable "enabled" {
-  default = 1
+  default = true
+  type    = bool
 }
 
 variable "region" {

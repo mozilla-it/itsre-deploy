@@ -19,7 +19,7 @@ variable "write_access_files" {
 }
 
 variable "users" {
-  type = "list"
+  type = list(string)
 }
 
 variable "iam_path_prefix" {
@@ -27,5 +27,6 @@ variable "iam_path_prefix" {
 }
 
 variable "delegated_account_ids" {
-  type = "list"
+  type = list(string)
 }
+

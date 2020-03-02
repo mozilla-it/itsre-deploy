@@ -14,9 +14,10 @@ data "aws_iam_policy_document" "billing-readonly" {
 }
 
 resource "aws_iam_policy" "billing-readonly" {
-  count       = "${var.enabled}"
+  count       = var.enabled ? 1 : 0
   name        = "BillingReadonly"
   path        = "/"
   description = "Readonly access to Account billing"
-  policy      = "${data.aws_iam_policy_document.billing-readonly.json}"
+  policy      = data.aws_iam_policy_document.billing-readonly.json
 }
+

@@ -1,8 +1,8 @@
 resource "aws_cloudtrail" "opsec-cloudtrail" {
-  count                         = "${var.enabled}"
+  count                         = var.enabled ? 1 : 0
   name                          = "opsec-cloudtrail"
-  s3_bucket_name                = "${var.cloudtrail_bucket}"
-  sns_topic_name                = "${var.cloudtrail_sns_topic}"
+  s3_bucket_name                = var.cloudtrail_bucket
+  sns_topic_name                = var.cloudtrail_sns_topic
   is_multi_region_trail         = true
   include_global_service_events = true
   enable_logging                = true
@@ -10,16 +10,17 @@ resource "aws_cloudtrail" "opsec-cloudtrail" {
 }
 
 resource "aws_cloudformation_stack" "opsec" {
-  count = "${var.enabled}"
+  count = var.enabled ? 1 : 0
   name  = "opsec"
 
   capabilities = [
     "CAPABILITY_IAM",
   ]
 
-  template_body = "${file("${path.module}/audit.yaml")}"
+  template_body = file("${path.module}/audit.yaml")
 
   parameters = {
-    EmailAddress = "${var.notify_address}"
+    EmailAddress = var.notify_address
   }
 }
+

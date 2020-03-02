@@ -1,1 +1,4 @@
-variable "enabled" {}
+variable "enabled" {
+  default = true
+  type    = bool
+}
