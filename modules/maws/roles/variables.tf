@@ -4,10 +4,6 @@ variable "region" {
 
 variable "enabled" {}
 
-variable "role_audience" {
-  default = "N7lULzWtfVUDGymwDs0yDEq6ZcwmFazj" #pragma: allowlist secret
-}
-
 variable "role_mapping" {
   type        = list(string)
   description = "The Mozilla LDAP or Mozillians group name to grant access to the roles"
@@ -17,8 +13,7 @@ variable "role_mapping" {
 }
 
 variable "idp_client_id" {
-  type    = list(string)
-  default = ["N7lULzWtfVUDGymwDs0yDEq6ZcwmFazj"] #pragma: allowlist secret
+  default = "N7lULzWtfVUDGymwDs0yDEq6ZcwmFazj" #pragma: allowlist secret
 }
 
 variable "max_session_duration" {

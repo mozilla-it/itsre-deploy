@@ -15,7 +15,9 @@ data "aws_iam_policy_document" "assume_role" {
     condition {
       test     = "StringEquals"
       variable = "auth.mozilla.auth0.com/:aud"
-      values   = var.idp_client_id
+      values   = [
+        var.idp_client_id
+      ]
     }
 
     condition {
