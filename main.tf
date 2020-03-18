@@ -38,6 +38,11 @@ module "users" {
   delegated_account_ids        = var.delegated_account_ids
 }
 
+module "maws" {
+  source  = "./modules/maws"
+  enabled = var.features["maws"]
+}
+
 module "infosec" {
   source  = "./modules/infosec"
   enabled = var.features["infosec"]
