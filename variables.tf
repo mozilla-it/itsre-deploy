@@ -16,15 +16,9 @@ variable "delegated_account_ids" {
 }
 
 variable "features" {
-  default = {
-    users    = false
-    vpc      = false
-    dns      = false
-    maws     = false
-    infosec  = true
-    account  = true
-    policies = true
-  }
+  description = "List of features to enable, look at local.tf for full list of valus"
+  type        = map(string)
+  default     = {}
 }
 
 variable "users" {
