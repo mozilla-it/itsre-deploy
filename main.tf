@@ -3,34 +3,23 @@ provider "aws" {
   region  = var.region
 }
 
-locals {
-  vpc_tags = merge(
-    {
-      "Region"      = var.region
-      "Environment" = "core"
-    },
-    var.default_tags,
-    var.kubernetes_tags,
-  )
-}
-
 data "aws_caller_identity" "current" {
 }
 
 module "policies" {
   source  = "./modules/policies"
-  enabled = var.features["policies"]
+  enabled = local.features["policies"]
 }
 
 module "account" {
   source       = "./modules/account"
   account_name = var.account_name
-  enabled      = var.features["account"]
+  enabled      = local.features["account"]
 }
 
 module "users" {
   source                       = "./modules/users"
-  create_users                 = var.features["users"]
+  create_users                 = local.features["users"]
   create_access_keys           = var.users["create_access_keys"]
   create_delegated_permissions = var.users["create_delegated_permissions"]
   write_access_files           = var.users["write_access_files"]
@@ -40,12 +29,12 @@ module "users" {
 
 module "maws" {
   source  = "./modules/maws"
-  enabled = var.features["maws"]
+  enabled = local.features["maws"]
 }
 
 module "infosec" {
   source  = "./modules/infosec"
-  enabled = var.features["infosec"]
+  enabled = local.features["infosec"]
 
   cloudtrail_bucket    = var.infosec["bucket"]
   cloudtrail_sns_topic = var.infosec["sns_topic"]
@@ -60,14 +49,14 @@ module "cloudhealth" {
 
 module "dns" {
   source       = "./modules/dns"
-  enabled      = var.features["dns"]
+  enabled      = local.features["dns"]
   account_name = var.account_name
 }
 
 module "vpc" {
   source                   = "./modules/vpc"
   region                   = var.region
-  enable_vpc               = var.features["vpc"]
+  enable_vpc               = local.features["vpc"]
   name                     = var.vpc["name"]
   vpc_cidr                 = var.vpc["vpc_cidr"]
   az_placement             = var.vpc["az_placement"]
