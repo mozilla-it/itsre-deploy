@@ -14,7 +14,7 @@ locals {
     users    = false
     vpc      = false
     dns      = false
-    maws     = false
+    maws     = true
     infosec  = true
     account  = true
     policies = true
