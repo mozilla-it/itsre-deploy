@@ -4,6 +4,7 @@ resource "aws_iam_account_alias" "alias" {
 }
 
 resource "aws_iam_account_password_policy" "strict" {
+  count                        = var.enabled ? 1 : 0
   minimum_password_length      = 16
   max_password_age             = 90
   password_reuse_prevention    = 24
