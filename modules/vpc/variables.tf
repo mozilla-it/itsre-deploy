@@ -61,3 +61,6 @@ variable "enable_dynamodb_endpoint" {
   default = true
 }
 
+variable "map_public_ip_on_launch" {
+  default = true
+}

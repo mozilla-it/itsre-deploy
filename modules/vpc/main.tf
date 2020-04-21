@@ -29,17 +29,19 @@ locals {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "2.24.0"
+  version = "2.33.0"
 
-  create_vpc             = var.enable_vpc
-  name                   = var.name
-  azs                    = local.az_placement
-  cidr                   = var.vpc_cidr
-  enable_nat_gateway     = var.enable_nat_gateway
-  single_nat_gateway     = var.single_nat_gateway
-  one_nat_gateway_per_az = var.one_nat_gateway_per_az
-  private_subnets        = local.private_subnets
-  public_subnets         = local.public_subnets
+  create_vpc              = var.enable_vpc
+  name                    = var.name
+  azs                     = local.az_placement
+  cidr                    = var.vpc_cidr
+  enable_nat_gateway      = var.enable_nat_gateway
+  single_nat_gateway      = var.single_nat_gateway
+  one_nat_gateway_per_az  = var.one_nat_gateway_per_az
+  private_subnets         = local.private_subnets
+  public_subnets          = local.public_subnets
+  map_public_ip_on_launch = var.map_public_ip_on_launch
+
 
   # DNS
   enable_dns_hostnames = var.vpc_enable_dns_hostnames
