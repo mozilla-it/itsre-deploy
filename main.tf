@@ -24,7 +24,6 @@ module "users" {
   create_delegated_permissions = var.users["create_delegated_permissions"]
   write_access_files           = var.users["write_access_files"]
   users                        = var.admin_users
-  delegated_account_ids        = var.delegated_account_ids
 }
 
 module "maws" {
