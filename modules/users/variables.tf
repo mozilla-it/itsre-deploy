@@ -25,8 +25,3 @@ variable "users" {
 variable "iam_path_prefix" {
   default = "itsre"
 }
-
-variable "delegated_account_ids" {
-  type = list(string)
-}
-

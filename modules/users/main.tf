@@ -6,18 +6,6 @@ locals {
   create_access_keys           = var.create_access_keys ? 1 : 0
   create_delegated_permissions = var.create_delegated_permissions ? 1 : 0
   write_access_files           = var.write_access_files ? 1 : 0
-  delegated_admin_arn = formatlist(
-    "arn:aws:iam::%s:role/itsre-admin",
-    var.delegated_account_ids,
-  )
-  delegated_readonly_arn = formatlist(
-    "arn:aws:iam::%s:role/itsre-readonly",
-    var.delegated_account_ids,
-  )
-  delegated_poweruser_arn = formatlist(
-    "arn:aws:iam::%s:role/itsre-poweruser",
-    var.delegated_account_ids,
-  )
 }
 
 # NOTE: When you switch the paths around the template needs its path
@@ -41,11 +29,11 @@ data "aws_iam_policy_document" "group-sts" {
     sid     = "AllowIndividualUserToAssumeRole"
     actions = ["sts:AssumeRole"]
 
-    resources = flatten([
-      local.delegated_admin_arn,
-      local.delegated_readonly_arn,
-      local.delegated_poweruser_arn,
-    ])
+    resources = [
+      "arn:aws:iam::*:role/itsre-admin",
+      "arn:aws:iam::*:role/itsre-readonly",
+      "arn:aws:iam::*:role/itsre-poweruser"
+    ]
 
     condition {
       test     = "Bool"
