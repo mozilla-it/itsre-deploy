@@ -10,11 +10,6 @@ variable "admin_users" {
   default = ["elim", "eziegenhorn", "kferrando", "sidler", "adelbarrio", "afrank"]
 }
 
-variable "delegated_account_ids" {
-  type    = list(string)
-  default = ["921547910285", "177680776199"]
-}
-
 variable "features" {
   description = "List of features to enable, look at local.tf for full list of valus"
   type        = map(string)
