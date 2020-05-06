@@ -25,3 +25,7 @@ variable "users" {
 variable "iam_path_prefix" {
   default = "itsre"
 }
+
+variable "max_session_duration" {
+  default = "43200"
+}
