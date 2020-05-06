@@ -37,6 +37,17 @@ variable "vpc" {
   }
 }
 
+variable "maws" {
+  type = object({
+    roles = bool
+    idp   = bool
+  })
+  default = {
+    roles = true
+    idp   = true
+  }
+}
+
 variable "cloudhealth" {
   default = {
     role_name   = "cloud_health_role"

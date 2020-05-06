@@ -27,8 +27,10 @@ module "users" {
 }
 
 module "maws" {
-  source  = "./modules/maws"
-  enabled = local.features["maws"]
+  source             = "./modules/maws"
+  enabled            = local.features["maws"]
+  maws_roles_enabled = local.maws["roles"]
+  maws_idp_enabled   = local.maws["idp"]
 }
 
 module "infosec" {
