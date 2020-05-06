@@ -21,4 +21,10 @@ locals {
   }
   features = merge(local.features_defaults, var.features)
 
+  maws_defaults = {
+    idp   = true
+    roles = true
+  }
+  maws = merge(local.maws_defaults, var.maws)
+
 }
