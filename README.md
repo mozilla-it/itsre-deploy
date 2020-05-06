@@ -1,4 +1,4 @@
-# itcloud-deploy
+# itsre-deploy
 
 This repository helps creating new AWS accounts automatizing several common actions for Mozilla IT.
 
@@ -12,4 +12,5 @@ This is the list of components it will (conditionaly) create:
 * Enable and configure CloudTrail.
 * Allow Cloudhealth to fetch billing data.
 * Create a new DNS zone with the name of the account under mozit.cloud.
+* Create maws roles and idp
 
