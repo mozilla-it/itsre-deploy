@@ -109,11 +109,12 @@ data "aws_iam_policy_document" "sts" {
 }
 
 resource "aws_iam_role" "admin" {
-  count              = local.create_users
-  path               = "/${var.iam_path_prefix}/"
-  name               = "AdminRole"
-  description        = "Admin role managed by Terraform"
-  assume_role_policy = element(data.aws_iam_policy_document.sts.*.json, count.index)
+  count                = local.create_users
+  path                 = "/${var.iam_path_prefix}/"
+  name                 = "AdminRole"
+  description          = "Admin role managed by Terraform"
+  max_session_duration = var.max_session_duration
+  assume_role_policy   = element(data.aws_iam_policy_document.sts.*.json, count.index)
 
   tags = {
     Name      = "AdminRole"
@@ -124,11 +125,12 @@ resource "aws_iam_role" "admin" {
 }
 
 resource "aws_iam_role" "readonly" {
-  count              = local.create_users
-  path               = "/${var.iam_path_prefix}/"
-  name               = "ReadOnlyRole"
-  description        = "ReadOnly role managed by Terraform"
-  assume_role_policy = element(data.aws_iam_policy_document.sts.*.json, count.index)
+  count                = local.create_users
+  path                 = "/${var.iam_path_prefix}/"
+  name                 = "ReadOnlyRole"
+  description          = "ReadOnly role managed by Terraform"
+  max_session_duration = var.max_session_duration
+  assume_role_policy   = element(data.aws_iam_policy_document.sts.*.json, count.index)
 
   tags = {
     Name      = "ReadOnlyRole"
@@ -139,11 +141,12 @@ resource "aws_iam_role" "readonly" {
 }
 
 resource "aws_iam_role" "poweruser" {
-  count              = local.create_users
-  path               = "/${var.iam_path_prefix}/"
-  name               = "PowerUserRole"
-  description        = "PowerUser role managed by Terraform"
-  assume_role_policy = element(data.aws_iam_policy_document.sts.*.json, count.index)
+  count                = local.create_users
+  path                 = "/${var.iam_path_prefix}/"
+  name                 = "PowerUserRole"
+  description          = "PowerUser role managed by Terraform"
+  max_session_duration = var.max_session_duration
+  assume_role_policy   = element(data.aws_iam_policy_document.sts.*.json, count.index)
 
   tags = {
     Name      = "PowerUserRole"
