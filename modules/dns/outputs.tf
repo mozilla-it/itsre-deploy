@@ -12,3 +12,7 @@ output "master_zone_name" {
   value = element(concat(aws_route53_zone.main.*.name, [""]), 0)
 }
 
+output "delegation_set_id" {
+  value = element(concat(aws_route53_delegation_set.default.*.id, [""]), 0)
+}
+
