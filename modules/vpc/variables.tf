@@ -61,6 +61,22 @@ variable "enable_dynamodb_endpoint" {
   default = true
 }
 
+variable "enable_rds_endpoint" {
+  default = false
+}
+
+variable "enable_secretsmanager_endpoint" {
+  default = false
+}
+
+variable "enable_ses_endpoint" {
+  default = false
+}
+
+variable "enable_ssm_endpoint" {
+  default = false
+}
+
 variable "map_public_ip_on_launch" {
   default = true
 }

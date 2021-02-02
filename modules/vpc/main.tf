@@ -29,7 +29,7 @@ locals {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "2.64.0"
+  version = "2.68.0"
 
   create_vpc              = var.enable_vpc
   name                    = var.name
@@ -47,11 +47,13 @@ module "vpc" {
   enable_dns_hostnames = var.vpc_enable_dns_hostnames
   enable_dns_support   = var.vpc_enable_dns_support
 
-  # VPC endpoint for S3
-  enable_s3_endpoint = var.enable_s3_endpoint
-
-  # VPC endpoint for DynamoDB
-  enable_dynamodb_endpoint = var.enable_dynamodb_endpoint
+  # Endpoints
+  enable_s3_endpoint             = var.enable_s3_endpoint
+  enable_dynamodb_endpoint       = var.enable_dynamodb_endpoint
+  enable_rds_endpoint            = var.enable_rds_endpoint
+  enable_secretsmanager_endpoint = var.enable_secretsmanager_endpoint
+  enable_ses_endpoint            = var.enable_ses_endpoint
+  enable_ssm_endpoint            = var.enable_ssm_endpoint
 
   tags = merge(var.tags, var.kubernetes_tags)
 

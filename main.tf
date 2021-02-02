@@ -54,17 +54,21 @@ module "dns" {
 }
 
 module "vpc" {
-  source                   = "./modules/vpc"
-  region                   = var.region
-  enable_vpc               = local.features["vpc"]
-  name                     = var.vpc["name"]
-  vpc_cidr                 = var.vpc["vpc_cidr"]
-  az_placement             = var.vpc["az_placement"]
-  enable_nat_gateway       = var.vpc["enable_nat_gateway"]
-  single_nat_gateway       = var.vpc["enable_single_nat_gateway"]
-  one_nat_gateway_per_az   = var.vpc["enable_multiple_nat_gateway"]
-  enable_dynamodb_endpoint = var.vpc["enable_dynamodb_endpoint"]
-  enable_s3_endpoint       = var.vpc["enable_s3_endpoint"]
-  tags                     = local.vpc_tags
+  source                         = "./modules/vpc"
+  region                         = var.region
+  enable_vpc                     = local.features["vpc"]
+  name                           = var.vpc["name"]
+  vpc_cidr                       = var.vpc["vpc_cidr"]
+  az_placement                   = var.vpc["az_placement"]
+  enable_nat_gateway             = var.vpc["enable_nat_gateway"]
+  single_nat_gateway             = var.vpc["enable_single_nat_gateway"]
+  one_nat_gateway_per_az         = var.vpc["enable_multiple_nat_gateway"]
+  enable_dynamodb_endpoint       = var.vpc["enable_dynamodb_endpoint"]
+  enable_s3_endpoint             = var.vpc["enable_s3_endpoint"]
+  enable_rds_endpoint            = var.vpc["enable_rds_endpoint"]
+  enable_secretsmanager_endpoint = var.vpc["enable_secretsmanager_endpoint"]
+  enable_ses_endpoint            = var.vpc["enable_ses_endpoint"]
+  enable_ssm_endpoint            = var.vpc["enable_ssm_endpoint"]
+  tags                           = local.vpc_tags
 }
 
