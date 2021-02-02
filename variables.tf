@@ -7,7 +7,7 @@ variable "account_name" {
 
 variable "admin_users" {
   type    = list(string)
-  default = ["elim", "eziegenhorn", "kferrando", "sidler", "adelbarrio", "afrank"]
+  default = ["elim", "adelbarrio"]
 }
 
 variable "features" {
@@ -26,14 +26,18 @@ variable "users" {
 
 variable "vpc" {
   default = {
-    name                        = "main-vpc"
-    vpc_cidr                    = "172.16.0.0/16"
-    az_placement                = "3"
-    enable_nat_gateway          = true
-    enable_single_nat_gateway   = true
-    enable_multiple_nat_gateway = false
-    enable_dynamodb_endpoint    = false
-    enable_s3_endpoint          = false
+    name                           = "main-vpc"
+    vpc_cidr                       = "172.16.0.0/16"
+    az_placement                   = "3"
+    enable_nat_gateway             = true
+    enable_single_nat_gateway      = true
+    enable_multiple_nat_gateway    = false
+    enable_dynamodb_endpoint       = false
+    enable_s3_endpoint             = false
+    enable_rds_endpoint            = false
+    enable_secretsmanager_endpoint = false
+    enable_ses_endpoint            = false
+    enable_ssm_endpoint            = false
   }
 }
 
