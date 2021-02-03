@@ -33,18 +33,16 @@ module "maws" {
 }
 
 module "infosec" {
-  source  = "./modules/infosec"
-  enabled = local.features["infosec"]
-
-  cloudtrail_bucket    = var.infosec["bucket"]
-  cloudtrail_sns_topic = var.infosec["sns_topic"]
+  source               = "./modules/infosec"
+  enabled              = local.features["infosec"]
+  cloudtrail_bucket    = local.infosec["bucket"]
+  cloudtrail_sns_topic = local.infosec["sns_topic"]
 }
 
 module "cloudhealth" {
-  source = "./modules/cloudhealth"
-
-  cloudhealth_role_name   = var.cloudhealth["role_name"]
-  cloudhealth_external_id = var.cloudhealth["external_id"]
+  source                  = "./modules/cloudhealth"
+  cloudhealth_role_name   = local.cloudhealth["role_name"]
+  cloudhealth_external_id = local.cloudhealth["external_id"]
 }
 
 module "dns" {
@@ -57,18 +55,18 @@ module "vpc" {
   source                         = "./modules/vpc"
   region                         = var.region
   enable_vpc                     = local.features["vpc"]
-  name                           = var.vpc["name"]
-  vpc_cidr                       = var.vpc["vpc_cidr"]
-  az_placement                   = var.vpc["az_placement"]
-  enable_nat_gateway             = var.vpc["enable_nat_gateway"]
-  single_nat_gateway             = var.vpc["enable_single_nat_gateway"]
-  one_nat_gateway_per_az         = var.vpc["enable_multiple_nat_gateway"]
-  enable_dynamodb_endpoint       = var.vpc["enable_dynamodb_endpoint"]
-  enable_s3_endpoint             = var.vpc["enable_s3_endpoint"]
-  enable_rds_endpoint            = var.vpc["enable_rds_endpoint"]
-  enable_secretsmanager_endpoint = var.vpc["enable_secretsmanager_endpoint"]
-  enable_ses_endpoint            = var.vpc["enable_ses_endpoint"]
-  enable_ssm_endpoint            = var.vpc["enable_ssm_endpoint"]
+  name                           = local.vpc["name"]
+  vpc_cidr                       = local.vpc["vpc_cidr"]
+  az_placement                   = local.vpc["az_placement"]
+  enable_nat_gateway             = local.vpc["enable_nat_gateway"]
+  single_nat_gateway             = local.vpc["enable_single_nat_gateway"]
+  one_nat_gateway_per_az         = local.vpc["enable_multiple_nat_gateway"]
+  enable_dynamodb_endpoint       = local.vpc["enable_dynamodb_endpoint"]
+  enable_s3_endpoint             = local.vpc["enable_s3_endpoint"]
+  enable_rds_endpoint            = local.vpc["enable_rds_endpoint"]
+  enable_secretsmanager_endpoint = local.vpc["enable_secretsmanager_endpoint"]
+  enable_ses_endpoint            = local.vpc["enable_ses_endpoint"]
+  enable_ssm_endpoint            = local.vpc["enable_ssm_endpoint"]
   tags                           = local.vpc_tags
 }
 

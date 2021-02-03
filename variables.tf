@@ -11,7 +11,7 @@ variable "admin_users" {
 }
 
 variable "features" {
-  description = "List of features to enable, look at local.tf for full list of valus"
+  description = "List of features to enable, look at local.tf for full list of values"
   type        = map(string)
   default     = {}
 }
@@ -25,45 +25,27 @@ variable "users" {
 }
 
 variable "vpc" {
-  default = {
-    name                           = "main-vpc"
-    vpc_cidr                       = "172.16.0.0/16"
-    az_placement                   = "3"
-    enable_nat_gateway             = true
-    enable_single_nat_gateway      = true
-    enable_multiple_nat_gateway    = false
-    enable_dynamodb_endpoint       = false
-    enable_s3_endpoint             = false
-    enable_rds_endpoint            = false
-    enable_secretsmanager_endpoint = false
-    enable_ses_endpoint            = false
-    enable_ssm_endpoint            = false
-  }
+  description = "VPC settings"
+  type        = map(string)
+  default     = {}
 }
 
 variable "maws" {
-  type = object({
-    roles = bool
-    idp   = bool
-  })
-  default = {
-    roles = true
-    idp   = true
-  }
+  description = "MAWS setting"
+  type        = map(string)
+  default     = {}
 }
 
 variable "cloudhealth" {
-  default = {
-    role_name   = "cloud_health_role"
-    external_id = "62f85b3d4efcbeb2b360ae857fec1e" # pragma: allowlist secret
-  }
+  description = "Cloudhealth role settings"
+  type        = map(string)
+  default     = {}
 }
 
 variable "infosec" {
-  default = {
-    bucket    = "mozilla-cloudtrail-logs"
-    sns_topic = "arn:aws:sns:us-west-2:088944123687:MozillaCloudTrailLogs"
-  }
+  description = "Infosec module settings"
+  type        = map(string)
+  default     = {}
 }
 
 variable "default_tags" {
