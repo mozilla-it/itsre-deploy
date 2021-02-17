@@ -8,7 +8,8 @@ variable "role_mapping" {
   type        = list(string)
   description = "The Mozilla LDAP or Mozillians group name to grant access to the roles"
   default = [
-    "team_se"
+    "team_se",
+    "mozilliansorg_web-sre-aws-access"
   ]
 }
 
