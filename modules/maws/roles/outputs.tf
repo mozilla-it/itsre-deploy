@@ -14,3 +14,7 @@ output "poweruserrolearn" {
 output "viewonlyrolearn" {
   value = aws_iam_role.viewonly.*.arn
 }
+
+output "assume_role_json" {
+  value = data.aws_iam_policy_document.assume_role.json
+}
