@@ -19,6 +19,11 @@ output "public_subnets" {
   value       = module.vpc.public_subnets
 }
 
+output "database_subnets" {
+  description = "List of IDs of database subnets"
+  value       = var.enable_public_database ? module.vpc.database_subnets : []
+}
+
 # NAT gateways
 output "nat_public_ips" {
   description = "List of public Elastic IPs created for AWS NAT Gateway"

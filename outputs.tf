@@ -30,6 +30,10 @@ output "private_subnets" {
   value = module.vpc.private_subnets
 }
 
+output "database_subnets" {
+  value = local.vpc["enable_public_database"] ? module.vpc.database_subnets : []
+}
+
 output "cloudhealth_role_arn" {
   value = module.cloudhealth.cloudhealth_assume_role_arn
 }
