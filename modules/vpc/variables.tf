@@ -80,3 +80,7 @@ variable "enable_ssm_endpoint" {
 variable "map_public_ip_on_launch" {
   default = true
 }
+
+variable "enable_public_database" {
+  default = false
+}

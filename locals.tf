@@ -26,6 +26,7 @@ locals {
     enable_secretsmanager_endpoint = false
     enable_ses_endpoint            = false
     enable_ssm_endpoint            = false
+    enable_public_database         = false
   }
   vpc = merge(local.vpc_defaults, var.vpc)
 
