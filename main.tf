@@ -67,6 +67,7 @@ module "vpc" {
   enable_secretsmanager_endpoint = local.vpc["enable_secretsmanager_endpoint"]
   enable_ses_endpoint            = local.vpc["enable_ses_endpoint"]
   enable_ssm_endpoint            = local.vpc["enable_ssm_endpoint"]
+  enable_public_database         = local.vpc["enable_public_database"]
   tags                           = local.vpc_tags
 }
 

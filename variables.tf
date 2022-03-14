@@ -60,4 +60,3 @@ variable "kubernetes_tags" {
   default = {}
   type    = map(string)
 }
-

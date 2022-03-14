@@ -25,6 +25,15 @@ locals {
       index(local.az_placement, num) % length(local.az_placement) + length(local.az_placement)
     )
   ]
+
+  database_subnets = [
+    for num in local.az_placement :
+    cidrsubnet(
+      var.vpc_cidr,
+      4,
+      index(local.az_placement, num) % length(local.az_placement) + length(local.az_placement) * 2
+    )
+  ]
 }
 
 module "vpc" {
@@ -46,6 +55,12 @@ module "vpc" {
   # DNS
   enable_dns_hostnames = var.vpc_enable_dns_hostnames
   enable_dns_support   = var.vpc_enable_dns_support
+
+  # Enable public access to the database subnets
+  database_subnets                       = var.enable_public_database ? local.database_subnets : []
+  create_database_subnet_group           = var.enable_public_database
+  create_database_subnet_route_table     = var.enable_public_database
+  create_database_internet_gateway_route = var.enable_public_database
 
   # Endpoints
   enable_s3_endpoint             = var.enable_s3_endpoint
